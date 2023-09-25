@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/home.dart';
+import 'package:flutter_application_2/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 // ignore: camel_case_types
 class screenLogin extends StatefulWidget {
@@ -74,6 +77,7 @@ final _formkey = GlobalKey<FormState>();
                  children: [
            
                    ElevatedButton.icon(
+                  
                     onPressed: () {
                       if(_formkey.currentState!.validate()){
                         checklogin(context);
@@ -83,7 +87,9 @@ final _formkey = GlobalKey<FormState>();
           
                     }, 
                    icon: const Icon(Icons.check),
+                   
                     label: const Text('login'),
+                    
                     
                     ),
                  ],
@@ -99,7 +105,7 @@ final _formkey = GlobalKey<FormState>();
     );
     
   }
-  void checklogin(BuildContext ctx){
+  void checklogin(BuildContext ctx) async {
     final _username = _usernameController.text;
     final _password = _passwordController.text;
     if(_username ==_password){
@@ -107,6 +113,12 @@ final _formkey = GlobalKey<FormState>();
     }
     else{
       final _errormessage = 'username password doesnot match';
+
+       final _sharedprefs = await SharedPreferences.getInstance();
+      await  _sharedprefs.setBool(SAVE_KEY_NAME, true);
+
+
+
       //snackbar
       ScaffoldMessenger.of(ctx)
       .showSnackBar(SnackBar(
